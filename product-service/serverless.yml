@@ -23,9 +23,11 @@ functions:
       - http:
           path: products/{id}
           method: get
+          cors: true
   getProductsList:
     handler: handlers/list-products.getProductsList
     events:
       - http:
           path: products
           method: get
+          cors: true
