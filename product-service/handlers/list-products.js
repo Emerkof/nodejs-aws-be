@@ -1,9 +1,9 @@
-import { handleResponseDecorator } from '../../lib/response';
+import { handleRequestResponseDecorator } from '../../lib/response';
 
-import products from '../products-data.json';
+import ProductService from '../services/product';
 
-export const getProductsList = handleResponseDecorator(
+export const getProductsList = handleRequestResponseDecorator(
   async function(event) {
-    return products;
+    return ProductService.listProducts();
   }
 );
