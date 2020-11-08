@@ -18,7 +18,7 @@
     },
     "price": {
       "type": "number",
-      "minimun": 0.5
+      "minimum": 0.5
     },
     "count": {
       "type": "integer",
