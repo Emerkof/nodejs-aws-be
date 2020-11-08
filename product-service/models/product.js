@@ -1,13 +1,14 @@
 import StockModel from './stock';
 
 export default class ProductModel {
-  constructor({ id, title, description, ingredients, image_url, stock }) {
+  constructor({ id, title, description, ingredients, image_url, stock , price}) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.ingredients = ingredients;
     this.imageUrl = image_url;
     this.stock = stock;
+    this.price = price;
   }
 
   static async findAll(client) {
