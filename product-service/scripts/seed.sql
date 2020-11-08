@@ -1,17 +1,20 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+DROP TABLE IF EXISTS stocks;
+DROP TABLE IF EXISTS products;
+
 CREATE TABLE IF NOT EXISTS products (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   title TEXT UNIQUE NOT NULL,
   description TEXT,
-  price NUMERIC(19, 2),
-  ingredients jsonb NOT NULL DEFAULT '[]'::jsonb,
+  price NUMERIC(19, 2) NOT NULL,
+  ingredients jsonb NOT NULL DEFAULT '[]',
   image_url TEXT
 );
 
 CREATE TABLE IF NOT EXISTS stocks (
   product_id uuid PRIMARY KEY REFERENCES products(id),
-  count INTEGER
+  count INTEGER DEFAULT 0
 );
 
 BEGIN;
