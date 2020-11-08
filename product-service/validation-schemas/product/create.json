@@ -16,6 +16,10 @@
       "type": "string",
       "format": "uri"
     },
+    "price": {
+      "type": "number",
+      "minimun": 0.5
+    },
     "count": {
       "type": "integer",
       "default": 0,
