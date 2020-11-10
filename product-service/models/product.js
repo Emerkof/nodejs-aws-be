@@ -31,7 +31,7 @@ export default class ProductModel {
     return this.mapToModel(result[0]);
   };
 
-  static async create(client, { title, price, description, ingredients = [], image_url }) {
+  static async create(client, { title, price, description = '', ingredients = [], image_url }) {
     const { rows: result } = await client.query(
       `INSERT INTO ${this.tableName} (title, price, description, ingredients, image_url) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
       [title, price, description, ingredients, image_url]
