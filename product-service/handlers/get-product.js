@@ -1,13 +1,19 @@
-import { handleResponseDecorator } from '../../lib/response';
-import { NotFoundError } from '../../lib/error';
+import { handleRequestResponseDecorator } from '../../lib/response';
+import { NotFoundError, BadRequestError } from '../../lib/error';
 
-import products from '../products-data.json';
+import ProductService from '../services/product';
 
-export const getProductsById = handleResponseDecorator(
+export const getProductsById = handleRequestResponseDecorator(
   async function(event) {
     const { pathParameters: { id } } = event;
 
-    const result = products.find(product => product.id === id);
+    const uuidRegexp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+    if (!uuidRegexp.test(id)) {
+      throw new BadRequestError('Invalid parameter format.');
+    }
+
+    const result = await ProductService.getProduct(id);
 
     if (!result) {
       throw new NotFoundError('Product not found.');

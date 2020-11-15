@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const slsw = require('serverless-webpack');
 const nodeExternals = require("webpack-node-externals");
 
@@ -22,5 +23,6 @@ module.exports = {
         exclude: /node_modules/,
       },
     ]
-  }
+  },
+  plugins: [new webpack.IgnorePlugin(/^pg-native$/)],
 };

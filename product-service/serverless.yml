@@ -10,6 +10,7 @@ provider:
 
 plugins:
   - serverless-plugin-webpack
+  - serverless-dotenv-plugin
 
 custom:
   webpack:
@@ -17,6 +18,16 @@ custom:
     keepOutputDirectory: true
 
 functions:
+  createProduct:
+    handler: handlers/create-product.createProduct
+    events:
+      - http:
+          path: products
+          method: post
+          cors: true
+          request:
+            schema:
+              application/json: ${file(./validation-schemas/product/create.json)}
   getProductsById:
     handler: handlers/get-product.getProductsById
     events:

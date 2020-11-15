@@ -1,0 +1,74 @@
+[
+  {
+      "id": "4cffb983-47b4-405c-b091-61a797586207",
+      "title": "Mohito",
+      "description": "Traditional Cuban highball.",
+      "price": "7.50",
+      "ingredients": ["White rum", "Sugar", "Lime juice", "Soda water", "Mint"],
+      "imageUrl": "https://easy-n-dizzy-assets.s3-eu-west-1.amazonaws.com/mohito.jpg"
+  },
+  {
+      "id": "4cffb983-47b4-405c-b091-61a79758620a",
+      "title": "Blue Lagoon",
+      "description": "Blue Curaçao mixed with vodka and lemonade.",
+      "price": "5.00",
+      "ingredients": ["Blue curacao", "Vodka", "Lemonade"],
+      "imageUrl": "https://easy-n-dizzy-assets.s3-eu-west-1.amazonaws.com/blue-lagoon.jpg"
+  },
+  {
+      "id": "4cffb983-47b4-405c-b091-61a79758620c",
+      "title": "Mai Tai",
+      "description": "The Mai Tai is a cocktail based on rum, Curaçao liqueur, orgeat syrup, and lime juice.",
+      "price": "15.00",
+      "ingredients": ["White rum", "Dark rum", "Lime juice", "Orange curacao", "Orgear syrup"],
+      "imageUrl": "https://easy-n-dizzy-assets.s3-eu-west-1.amazonaws.com/mai-tai.jpg"
+  },
+  {
+      "id": "4cffb983-47b4-405c-b091-61a79758620d",
+      "title": "Margarita",
+      "description": "A margarita is a Mexican cocktail consisting of tequila, orange liqueur, and lime juice often served with salt on the rim of the glass.",
+      "price": "10.00",
+      "ingredients": ["Cointreau", "Lime juice", "Tequila"],
+      "imageUrl": "https://easy-n-dizzy-assets.s3-eu-west-1.amazonaws.com/margarita.jpg"
+  },
+  {
+      "id": "4cffb983-47b4-405c-b091-61a797586204",
+      "title": "Old Fashioned",
+      "description": "The old fashioned is a cocktail made by muddling sugar with bitters and water, adding whiskey or, less commonly, brandy, and garnishing with orange slice or zest and a cocktail cherry.",
+      "price": "12.00",
+      "ingredients": ["Bourbon", "Sugar", "Angostura bitters", "Plain water"],
+      "imageUrl": "https://easy-n-dizzy-assets.s3-eu-west-1.amazonaws.com/old-fashioned.jpg"
+  },
+  {
+      "id": "4cffb983-47b4-405c-b091-61a7975862ed",
+      "title": "Pina Colada",
+      "description": "The piña colada is a sweet cocktail made with rum, cream of coconut or coconut milk, and pineapple juice, usually served either blended or shaken with ice.",
+      "price": "12.50",
+      "ingredients": ["White rum", "Coconut liquor", "Pineapple juice"],
+      "imageUrl": "https://easy-n-dizzy-assets.s3-eu-west-1.amazonaws.com/pina-colada.jpg"
+  },
+  {
+      "id": "4cffb983-47b4-405c-b091-61a7975862Of",
+      "title": "Queens Park Swizzle",
+      "description": "More drier, complex variation of the original Mohito cocktail",
+      "price": "14.50",
+      "ingredients": ["Dark rum", "Lime juice", "Demerara", "Angostura bitters", "Mint"],
+      "imageUrl": "https://easy-n-dizzy-assets.s3-eu-west-1.amazonaws.com/queens-park-swizzle.jpg"
+  },
+  {
+      "id": "4cffb983-47b4-405c-b091-61a7975862qt",
+      "title": "Tequila Sunrise",
+      "description": "The tequila sunrise is a cocktail made of tequila, orange juice, and grenadine syrup. It's served unmixed in a tall glass.",
+      "price": "9.50",
+      "ingredients": ["Tequila", "Grenadine syrup", "Orange juice"],
+      "imageUrl": "https://easy-n-dizzy-assets.s3-eu-west-1.amazonaws.com/tequila-sunrise.jpg"
+  },
+  {
+      "id": "4cffb983-47b4-405c-b091-61a7975862rt",
+      "title": "White Russian",
+      "description": "A White Russian is a cocktail made with vodka, coffee liqueur and cream served with ice in an Old Fashioned glass.",
+      "price": "11.00",
+      "ingredients": ["Vodka", "Fresh cream", "Coffee liqueur"],
+      "imageUrl": "https://easy-n-dizzy-assets.s3-eu-west-1.amazonaws.com/white-russian.jpg"
+  }
+]
