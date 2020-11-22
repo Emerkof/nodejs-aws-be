@@ -8,6 +8,17 @@ provider:
   region: eu-west-1
   stage: dev
 
+  environment:
+    SNS_PRODUCT_CREATED_TOPIC_ARN:
+      Ref: SNSProductCreatedTopic
+
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'sns:Publish'
+      Resource:
+        Ref: SNSProductCreatedTopic
+
 plugins:
   - serverless-plugin-webpack
   - serverless-dotenv-plugin
@@ -16,6 +27,7 @@ custom:
   webpack:
     config: ../webpack.config.js
     keepOutputDirectory: true
+
 
 resources:
   Outputs:
@@ -26,6 +38,17 @@ resources:
       Value:
         Ref: SQSProductQueue
   Resources:
+    SNSProductCreatedTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${env:SNS_PRODUCT_CREATED_TOPIC_NAME}
+    SNSSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: ${env:SNS_PRODUCT_CREATED_TOPIC_ENDPOINT}
+        Protocol: email
+        TopicArn:
+          Ref: SNSProductCreatedTopic
     SQSProductQueue:
       Type: AWS::SQS::Queue
       Properties:
