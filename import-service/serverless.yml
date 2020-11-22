@@ -1,0 +1,49 @@
+service: import-service
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-1
+  stage: dev
+
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 's3:GetObject'
+        - 's3:PutObject'
+        - 's3:DeleteObject'
+      Resource:
+        - 'arn:aws:s3:::${env:S3_IMPORT_BUCKET}/*'
+
+plugins:
+  - serverless-plugin-webpack
+  - serverless-dotenv-plugin
+
+custom:
+  webpack:
+    config: ../webpack.config.js
+
+functions:
+  importProductsFile:
+    handler: handlers/import-products-file.getImportProductSignedUrl
+    events:
+      - http:
+          path: import
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                name: true
+  importFileParser:
+    handler: handlers/import-file-parser.parseProductsFile
+    events:
+      - s3:
+          bucket: ${env:S3_IMPORT_BUCKET}
+          event: 's3:ObjectCreated:*'
+          rules:
+            - prefix: 'uploaded/'
+          existing: true
+
