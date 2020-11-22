@@ -15,7 +15,7 @@ provider:
   iamRoleStatements:
     - Effect: 'Allow'
       Action:
-        - 'sns:Publish'
+        - 'sns:*'
       Resource:
         Ref: SNSProductCreatedTopic
 

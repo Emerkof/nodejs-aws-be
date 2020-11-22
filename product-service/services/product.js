@@ -1,10 +1,12 @@
 import dbAdaptor from '../../lib/db';
 
 import { BaseService } from '../../lib/service';
+import { AwsSNS} from '../../lib/aws';
 
 import ProductModel from '../models/product';
 import StockModel from '../models/stock';
 
+const { SNS_PRODUCT_CREATED_TOPIC_ARN } = process.env;
 class ProductService extends BaseService {
   constructor(adaptor, ProductModel, StockModel) {
     super(adaptor);
@@ -53,7 +55,13 @@ class ProductService extends BaseService {
       });
     }
 
-    return Promise.all(promiseFns.map(fn => fn()));
+    const stocks = await Promise.all(promiseFns.map(fn => fn()));
+
+    return AwsSNS.publish({
+      Subject: 'New products created',
+      TopicArn: SNS_PRODUCT_CREATED_TOPIC_ARN,
+      Message: JSON.stringify(stocks),
+    });
   }
 }
 
