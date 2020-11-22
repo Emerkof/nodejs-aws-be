@@ -17,6 +17,9 @@ class ProductService extends BaseService {
     this.createProduct = this.withReleaseConnection(
       this.withTransaction(this.createProduct)
     ).bind(this);
+    this.createProductBatch = this.withReleaseConnection(
+      this.withTransaction(this.createProductBatch)
+    ).bind(this);
   }
 
   listProducts(client) {
@@ -36,6 +39,22 @@ class ProductService extends BaseService {
 
     return this.ProductModel.findOne(client, product.id);
   };
+
+  async createProductBatch(client, records) {
+    const promiseFns = [];
+
+    for (const record of records) {
+      const { count, ...productData } = JSON.parse(record.body);
+
+      promiseFns.push(async () => {
+        const product = await this.ProductModel.create(client, productData);
+
+        return this.StockModel.create(client, { count, product_id: product.id });
+      });
+    }
+
+    return Promise.all(promiseFns.map(fn => fn()));
+  }
 }
 
 export default new ProductService(dbAdaptor, ProductModel, StockModel);
