@@ -17,7 +17,30 @@ custom:
     config: ../webpack.config.js
     keepOutputDirectory: true
 
+resources:
+  Outputs:
+    SQSProductQueueArn:
+      Value:
+        Fn::GetAtt: [ SQSProductQueue, Arn ]
+    SQSProductQueueUrl:
+      Value:
+        Ref: SQSProductQueue
+  Resources:
+    SQSProductQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${env:SQS_PRODUCT_QUEUE_NAME}
+
 functions:
+  catalogBatchProcess:
+    handler: handlers/catalog-batch-process.createProductBatch
+    events:
+        - sqs:
+            batchSize: 5
+            arn:
+              Fn::GetAtt:
+                - SQSProductQueue
+                - Arn
   createProduct:
     handler: handlers/create-product.createProduct
     events:
