@@ -18,9 +18,7 @@ class ImportService extends BaseService {
       ContentType: 'text/csv',
     };
 
-    const url = await AwsS3.getSignedUrl('putObject', params);
-
-    return { url };
+    return AwsS3.getSignedUrl('putObject', params);
   }
 
   async parseProductCsv(records) {
