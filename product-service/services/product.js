@@ -19,9 +19,6 @@ class ProductService extends BaseService {
     this.createProduct = this.withReleaseConnection(
       this.withTransaction(this.createProduct)
     ).bind(this);
-    this.createProductBatch = this.withReleaseConnection(
-      this.withTransaction(this.createProductBatch)
-    ).bind(this);
   }
 
   listProducts(client) {
@@ -42,25 +39,26 @@ class ProductService extends BaseService {
     return this.ProductModel.findOne(client, product.id);
   };
 
-  async createProductBatch(client, records) {
-    const promiseFns = [];
+  async createProductBatch(records) {
+    const promiseJobs = [];
 
     for (const record of records) {
-      const { count, ...productData } = JSON.parse(record.body);
-
-      promiseFns.push(async () => {
-        const product = await this.ProductModel.create(client, productData);
-
-        return this.StockModel.create(client, { count, product_id: product.id });
-      });
+      promiseJobs.push(this.createProduct(JSON.parse(record.body)));
     }
 
-    const stocks = await Promise.all(promiseFns.map(fn => fn()));
+    const products = await Promise.all(promiseJobs);
+
 
     return AwsSNS.publish({
       Subject: 'New products created',
       TopicArn: SNS_PRODUCT_CREATED_TOPIC_ARN,
-      Message: JSON.stringify(stocks),
+      Message: JSON.stringify(products),
+      MessageAttributes: {
+        total_price: {
+          DataType: "Number",
+          StringValue: products.reduce((acc, cur) => acc += cur.price, 0).toString(),
+        },
+      },
     });
   }
 }
