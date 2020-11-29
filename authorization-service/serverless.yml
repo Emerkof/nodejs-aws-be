@@ -1,0 +1,20 @@
+service: authorization-service
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-1
+  stage: dev
+
+plugins:
+  - serverless-dotenv-plugin
+
+custom:
+  webpack:
+    config: ../webpack.config.js
+
+functions:
+  basicAuthorizer:
+    handler: handlers/basic-authorizer.authorize
