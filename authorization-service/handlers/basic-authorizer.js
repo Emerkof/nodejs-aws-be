@@ -1,13 +1,14 @@
 
 import { AwsAuthorizer, BasicAuthorizer } from '../../lib/aws';
 
-export async function authorize({ type, methodArn, authorizationToken }, cb) {
+export async function authorize({ type, methodArn, authorizationToken }, context, cb) {
   const authorizer = new AwsAuthorizer(new BasicAuthorizer({ token: authorizationToken, methodArn }));
 
   if (!authorizer.isAuthorized()) {
-    cb('Unauthorized.');
+    cb('Unauthorized');
   }
 
+  const policy = authorizer.authorize();
 
-  authorizer.authorize();
+  cb(null, policy);
 }
