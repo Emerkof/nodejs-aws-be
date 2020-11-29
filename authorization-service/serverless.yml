@@ -10,6 +10,7 @@ provider:
 
 plugins:
   - serverless-dotenv-plugin
+  - serverless-plugin-webpack
 
 custom:
   webpack:
