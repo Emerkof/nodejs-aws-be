@@ -8,6 +8,17 @@ provider:
   region: eu-west-1
   stage: dev
 
+  environment:
+    SNS_PRODUCT_CREATED_TOPIC_ARN:
+      Ref: SNSProductCreatedTopic
+
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'sns:*'
+      Resource:
+        Ref: SNSProductCreatedTopic
+
 plugins:
   - serverless-plugin-webpack
   - serverless-dotenv-plugin
@@ -17,7 +28,59 @@ custom:
     config: ../webpack.config.js
     keepOutputDirectory: true
 
+
+resources:
+  Outputs:
+    SQSProductQueueArn:
+      Value:
+        Fn::GetAtt: [ SQSProductQueue, Arn ]
+    SQSProductQueueUrl:
+      Value:
+        Ref: SQSProductQueue
+  Resources:
+    SNSProductCreatedTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${env:SNS_PRODUCT_CREATED_TOPIC_NAME}
+    SNSBelowPriceLimitSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: ${env:SNS_PRODUCT_CREATED_BELOW_LIMIT_SUB_ENDPOINT}
+        Protocol: email
+        TopicArn:
+          Ref: SNSProductCreatedTopic
+        FilterPolicy:
+          total_price:
+            - numeric:
+                - '<'
+                - 100
+    SNSBeyondPriceLimitSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: ${env:SNS_PRODUCT_CREATED_BEYOND_LIMIT_SUB_ENDPOINT}
+        Protocol: email
+        TopicArn:
+          Ref: SNSProductCreatedTopic
+        FilterPolicy:
+          total_price:
+            - numeric:
+                - '>='
+                - 100
+    SQSProductQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${env:SQS_PRODUCT_QUEUE_NAME}
+
 functions:
+  catalogBatchProcess:
+    handler: handlers/catalog-batch-process.createProductBatch
+    events:
+        - sqs:
+            batchSize: 5
+            arn:
+              Fn::GetAtt:
+                - SQSProductQueue
+                - Arn
   createProduct:
     handler: handlers/create-product.createProduct
     events:

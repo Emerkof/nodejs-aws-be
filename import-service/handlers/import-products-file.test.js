@@ -1,5 +1,3 @@
-const { IoT1ClickDevicesService } = require("aws-sdk");
-
 import { getImportProductSignedUrl } from './import-products-file';
 
 describe('getImportProductSignedUrl', () => {
@@ -10,10 +8,6 @@ describe('getImportProductSignedUrl', () => {
 
     expect(response.statusCode).toBe(200);
 
-    const parsedBody = JSON.parse(response.body);
-
-    expect(parsedBody).toMatchObject({
-      url: expect.any(String),
-    });
+    expect(response.body).toBe('url');
   });
 });
