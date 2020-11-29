@@ -33,6 +33,18 @@ custom:
   webpack:
     config: ../webpack.config.js
 
+resources:
+  Resources:
+    GatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+
 functions:
   importProductsFile:
     handler: handlers/import-products-file.getImportProductSignedUrl
