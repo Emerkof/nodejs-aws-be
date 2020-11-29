@@ -1,4 +1,3 @@
-
 import { AwsAuthorizer, BasicAuthorizer } from '../../lib/aws';
 
 export async function authorize({ type, methodArn, authorizationToken }, context, cb) {
