@@ -6,6 +6,10 @@ const axios = require('axios').default;
 const app = express();
 const port = process.env.PORT || 3000;
 
+const cache = {};
+
+const CACHE_EXPIRES_MS = 1000 * 120;
+
 app.use(express.json());
 
 app.all('*', async (req, res) => {
@@ -13,6 +17,14 @@ app.all('*', async (req, res) => {
   const recipientUrl = process.env[recipient];
 
   if (recipientUrl) {
+    if (cache[recipient] && cache[recipient].expiresIn < Date.now()) {
+      delete cache[recipient];
+    }
+
+    if (cache[recipient]) {
+      return res.json(cache[recipient].data);
+    }
+
     const redirectConfig = {
       method: req.method,
       url: `${recipientUrl}${req.originalUrl}`,
@@ -21,6 +33,13 @@ app.all('*', async (req, res) => {
 
     try {
       const result = await axios(redirectConfig);
+
+      if (recipient === 'products') {
+        cache[recipient] = {
+          expiresIn: Date.now() + CACHE_EXPIRES_MS,
+          data: result.data,
+        };
+      }
 
       return res.json(result.data);
     } catch (error) {
