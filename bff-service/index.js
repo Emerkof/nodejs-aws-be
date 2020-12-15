@@ -21,7 +21,7 @@ app.all('*', async (req, res) => {
       delete cache[recipient];
     }
 
-    if (cache[recipient]) {
+    if (cache[recipient] && req.originalUrl.endsWith('products') && req.method === 'GET') {
       return res.json(cache[recipient].data);
     }
 
@@ -34,7 +34,7 @@ app.all('*', async (req, res) => {
     try {
       const result = await axios(redirectConfig);
 
-      if (recipient === 'products') {
+      if (recipient === 'products' && req.originalUrl.endsWith('products') && req.method === 'GET') {
         cache[recipient] = {
           expiresIn: Date.now() + CACHE_EXPIRES_MS,
           data: result.data,
